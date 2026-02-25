@@ -1,0 +1,38 @@
+name: Deploy api-gateway
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'gradle' # ⚡️ Magique : gère le cache des dépendances automatiquement
+
+      - name: Run Tests
+        run: ./gradlew clean test --no-daemon
+
+      - name: Build JAR
+        run: ./gradlew bootJar --no-daemon
+
+      - name: Login to Docker Hub
+        if: success() # Ne s'exécute que si les tests passent
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: magnomos/api-gateway:latest

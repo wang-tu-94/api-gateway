@@ -1,0 +1,51 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: ms-auth-route
+              # L'URI doit correspondre au nom de ton Service Kubernetes pour ms-auth
+              uri: http://ms-auth-service:8082
+              predicates:
+                - Path=/ms-auth/**
+
+            # 2. Route vers ton backend principal
+            - id: product-backend-route
+              # L'URI doit correspondre au nom de ton Service K8s pour le backend
+              uri: http://product-backend-service:8080
+              predicates:
+                # Tu peux lister tous les préfixes gérés par ce microservice
+                - Path=/product-backend/**
+
+      # (Optionnel mais recommandé) Pour voir les logs de routage si ça bug
+      httpclient:
+        wiretap: true
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "product-app.local" # À restreindre en prod !
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+
+jwt:
+  secret: ${JWT_SECRET:8w9eK7sVh3FQ2mJ6lP0rXyZtN1bQ4uDkFvHsT2cW+Eo=}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      show-details: always

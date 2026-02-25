@@ -1,0 +1,5 @@
+.gradle
+.gradle-cache
+bin
+out
+.git

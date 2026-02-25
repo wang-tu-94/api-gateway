@@ -1,0 +1,18 @@
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: ms-auth-route
+              uri: http://localhost:8082 # On remplace le nom K8s par localhost
+              predicates:
+                - Path=/ms-auth/**
+            - id: product-backend-route
+              uri: http://localhost:8082
+              predicates:
+                - Path=/product-backend/**
+
+# On peut aussi mettre un secret de test fixe ici
+jwt:
+  secret: dGhpcy1pcy1hLXZlcnktbG9uZy1zZWNyZXQta2V5LWZvci10ZXN0aW5nLXB1cnBvc2VzLW9ubHk=
