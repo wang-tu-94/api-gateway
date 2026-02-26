@@ -29,7 +29,7 @@ public class JwtValidationFilter implements GlobalFilter, Ordered {
 
     private final List<String> openApiEndpoints = List.of(
             "/v1/auth/login",
-            "/v1/auth/register"
+            "/v1/accounts/register"
     );
 
     public JwtValidationFilter(@Value("${jwt.secret}") String secret) {
@@ -73,8 +73,7 @@ public class JwtValidationFilter implements GlobalFilter, Ordered {
                 .noneMatch(uri -> request.getURI().getPath().contains(uri));
     }
 
-    // Génère une réponse JSON d'erreur propre en WebFlux (sans utiliser de @ControllerAdvice)
-    private Mono<Void> onError(ServerWebExchange exchange, String message, HttpStatus status) {
+        private Mono<Void> onError(ServerWebExchange exchange, String message, HttpStatus status) {
         ServerHttpResponse response = exchange.getResponse();
         response.setStatusCode(status);
         response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
