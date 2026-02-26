@@ -7,11 +7,11 @@ spring:
             - id: ms-auth-route
               uri: http://localhost:8082 # On remplace le nom K8s par localhost
               predicates:
-                - Path=/ms-auth/**
+                - Path=/api/ms-auth/**
             - id: product-backend-route
               uri: http://localhost:8082
               predicates:
-                - Path=/product-backend/**
+                - Path=/api/product-backend/**
 
 # On peut aussi mettre un secret de test fixe ici
 jwt:

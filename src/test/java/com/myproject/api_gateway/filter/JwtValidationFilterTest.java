@@ -47,14 +47,14 @@ class JwtValidationFilterTest {
     @Test
     void shouldAllowPublicRoutesWithoutToken() {
         mockBackEnd.enqueue(new MockResponse().setResponseCode(200));
-        webClient.get().uri("/ms-auth/api/v1/auth/login")
+        webClient.get().uri("/api/ms-auth/api/v1/auth/login")
                 .exchange()
                 .expectStatus().isOk(); // Preuve que le filtre a laissé passer la requête
     }
 
     @Test
     void shouldRejectSecuredRoutesWithoutToken() {
-        webClient.get().uri("/product-backend/api/v1/products")
+        webClient.get().uri("/api/product-backend/v1/products")
                 .exchange()
                 .expectStatus().isUnauthorized()
                 .expectBody()
@@ -63,7 +63,7 @@ class JwtValidationFilterTest {
 
     @Test
     void shouldRejectSecuredRoutesWithInvalidToken() {
-        webClient.get().uri("/product-backend/api/v1/products")
+        webClient.get().uri("/api/product-backend/v1/products")
                 .header("Authorization", "Bearer faux_token_pourri")
                 .exchange()
                 .expectStatus().isUnauthorized()
@@ -77,7 +77,7 @@ class JwtValidationFilterTest {
 
         String validToken = generateValidToken();
 
-        webClient.get().uri("/product-backend/api/v1/products")
+        webClient.get().uri("/api/product-backend/v1/products")
                 .header("Authorization", "Bearer " + validToken)
                 .exchange()
                 .expectStatus().isOk();

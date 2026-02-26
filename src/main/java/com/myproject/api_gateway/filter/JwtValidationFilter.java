@@ -27,10 +27,9 @@ public class JwtValidationFilter implements GlobalFilter, Ordered {
 
     private final SecretKey key;
 
-    // Les routes qui ne nécessitent pas de token
     private final List<String> openApiEndpoints = List.of(
-            "/api/v1/auth/login",
-            "/api/v1/auth/register"
+            "/v1/auth/login",
+            "/v1/auth/register"
     );
 
     public JwtValidationFilter(@Value("${jwt.secret}") String secret) {
