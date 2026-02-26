@@ -14,8 +14,6 @@ spring:
               uri: http://ms-auth-service:8082
               predicates:
                 - Path=/api/ms-auth/**
-              filters:
-                - StripPrefix=2
 
             # 2. Route vers ton backend principal
             - id: product-backend-route
@@ -24,8 +22,6 @@ spring:
               predicates:
                 # Tu peux lister tous les préfixes gérés par ce microservice
                 - Path=/api/product-backend/**
-              filters:
-                - StripPrefix=2
 
       # (Optionnel mais recommandé) Pour voir les logs de routage si ça bug
       httpclient:
