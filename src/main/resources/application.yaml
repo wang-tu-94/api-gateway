@@ -13,7 +13,7 @@ spring:
               # L'URI doit correspondre au nom de ton Service Kubernetes pour ms-auth
               uri: http://ms-auth-service:8082
               predicates:
-                - Path=/ms-auth/**
+                - Path=/api/ms-auth/**
 
             # 2. Route vers ton backend principal
             - id: product-backend-route
@@ -21,7 +21,7 @@ spring:
               uri: http://product-backend-service:8080
               predicates:
                 # Tu peux lister tous les préfixes gérés par ce microservice
-                - Path=/product-backend/**
+                - Path=/api/product-backend/**
 
       # (Optionnel mais recommandé) Pour voir les logs de routage si ça bug
       httpclient:
