@@ -73,16 +73,16 @@ public class JwtValidationFilter implements GlobalFilter, Ordered {
                 .noneMatch(uri -> request.getURI().getPath().contains(uri));
     }
 
-        private Mono<Void> onError(ServerWebExchange exchange, String message, HttpStatus status) {
-        ServerHttpResponse response = exchange.getResponse();
-        response.setStatusCode(status);
-        response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
+    private Mono<Void> onError(ServerWebExchange exchange, String message, HttpStatus status) {
+    ServerHttpResponse response = exchange.getResponse();
+    response.setStatusCode(status);
+    response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
 
-        String body = String.format("{\"status\": %d, \"error\": \"Unauthorized\", \"message\": \"%s\"}",
-                status.value(), message);
-        DataBuffer buffer = response.bufferFactory().wrap(body.getBytes(StandardCharsets.UTF_8));
+    String body = String.format("{\"status\": %d, \"error\": \"Unauthorized\", \"message\": \"%s\"}",
+            status.value(), message);
+    DataBuffer buffer = response.bufferFactory().wrap(body.getBytes(StandardCharsets.UTF_8));
 
-        return response.writeWith(Mono.just(buffer));
+    return response.writeWith(Mono.just(buffer));
     }
 
     @Override

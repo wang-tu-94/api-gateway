@@ -10,17 +10,17 @@ spring:
         webflux:
           routes:
             - id: ms-auth-route
-              # L'URI doit correspondre au nom de ton Service Kubernetes pour ms-auth
               uri: http://ms-auth-service:8082
               predicates:
                 - Path=/api/ms-auth/**
+            - id: ms-cms-route
+              uri: http://ms-cms-service:8086
+              predicates:
+                - Path=/api/ms-cms/**
 
-            # 2. Route vers ton backend principal
             - id: product-backend-route
-              # L'URI doit correspondre au nom de ton Service K8s pour le backend
               uri: http://product-backend-service:8080
               predicates:
-                # Tu peux lister tous les préfixes gérés par ce microservice
                 - Path=/api/product-backend/**
 
       # (Optionnel mais recommandé) Pour voir les logs de routage si ça bug
@@ -49,3 +49,14 @@ management:
   endpoint:
     health:
       show-details: always
+
+logging:
+  level:
+    root: INFO
+    # Pour voir les décisions de routage (quelle route est choisie)
+    org.springframework.cloud.gateway: TRACE
+    # Pour voir les headers et l'URI exacte envoyée vers le microservice
+    org.springframework.http.server.reactive: DEBUG
+    org.springframework.web.reactive: DEBUG
+    # Active le wiretap pour voir le contenu brut des échanges
+    reactor.netty.http.client: DEBUG
