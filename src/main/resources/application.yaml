@@ -17,7 +17,10 @@ spring:
               uri: http://ms-cms-service:8086
               predicates:
                 - Path=/api/ms-cms/**
-
+            - id: ms-jobs-route
+              uri: http://ms-jobs-service:8087
+              predicates:
+                - Path=/api/ms-jobs/**
             - id: product-backend-route
               uri: http://product-backend-service:8080
               predicates:
