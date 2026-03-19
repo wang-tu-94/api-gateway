@@ -21,10 +21,10 @@ spring:
               uri: http://ms-jobs-service:8087
               predicates:
                 - Path=/api/ms-jobs/**
-            - id: product-backend-route
-              uri: http://product-backend-service:8080
+            - id: ms-products-route
+              uri: http://ms-products-service:8080
               predicates:
-                - Path=/api/product-backend/**
+                - Path=/api/ms-products/**
 
       # (Optionnel mais recommandé) Pour voir les logs de routage si ça bug
       httpclient:
